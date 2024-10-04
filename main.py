@@ -8,7 +8,8 @@ from os import path
 from random import randint
 
 #create a game class to represent the examples later
-# it will have all necessary parts to run the game
+# it will have all necessary parts to run the game\
+#we are editing after installing Git
 
 #Block 1
 #will have all the neessary parts oto run the game and organize elements needed to create a game
@@ -32,7 +33,11 @@ class Game:
         #tnks function will create everything we need to recreate objects on screen
         #create all items in terminal
         self.load_data()
+        print(self.map.data)
         self.all_sprites = pg.sprite.Group()
+        self.all_walls = pg.sprite.Group()
+        self.all_mobs = pg.sprite.Group()
+        self.all_powerups = pg.sprite.Group()
         
         #self.player = Player(self, 1, 1)
         #self.mob = Mob(self, 100, 100)
@@ -51,6 +56,7 @@ class Game:
           #  w = Wall(self, i*TILESIZE,32)
            # self.all_sprites.add(w)
         
+        #takes map.data and parses it using enumerate  so that we can assign x and y value object instance
         for row, tiles in enumerate(self.map.data):
             print(row)
             for col, tile in enumerate(tiles):
@@ -61,6 +67,8 @@ class Game:
                     Player(self, col, row)
                 if tile == 'M':
                     Mob(self, col, row)
+                if tile == 'U':
+                    Powerup(self, col, row)
 
        
             
@@ -87,10 +95,18 @@ class Game:
 #process + Block 5 + 
     def update(self):
         self.all_sprites.update()
-
+    def draw_text(self, surface, text, size, color, x, y):
+        font_name = pg.font.match_font('arial')
+        font = pg.font.Font(font_name, size)
+        text_surface = font.render(text, True, color)
+        text_rect = text_surface.get_rect()
+        text_rect.midtop = (x,y)
+        surface.blit(text_surface, text_rect)
+    
 #output (draw) + block 6
     def draw(self):
         self.screen.fill(WHITE)
+        self.draw_text(self.screen, str(self.dt*1000), 24, BLACK, WIDTH/2, HEIGHT/2)
         self.all_sprites.draw(self.screen)
         pg.display.flip()
 

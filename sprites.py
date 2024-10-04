@@ -51,6 +51,28 @@ class Mob(Sprite):
         self.rect.y = y
         self.speed = 10
     
+    #modify player dynamics by adding blockers to player movement
+    def collide_with_walls(self, dir):
+        if dir == 'x':
+            hits = pg.sprite.spritecollide(self, self.game.all_walls, False)
+            if hits:
+                if self.vx > 0:
+                    self.x = hits[0].rect.left - self.rect.width
+                if self.vx < 0:
+                    self.x = hits[0].rect.right
+                    self.vx = 0
+                    self.rect.x = self.x
+        if dir == 'y':
+            hits = pg.sprite.spritecollide(self,self.game.all_walls, False)
+            if hits:
+                if self.vy > 0:
+                    self.y = hits[0].rect.top - self.rect.width
+                if self.vy < 0:
+                    self.x = hits[0].rect.bottom
+                    self.vy = 0
+                    self.rect.y = self.y
+
+    
 
     def update(self):
         #looking for key pressed, moving to side of screen
@@ -58,7 +80,7 @@ class Mob(Sprite):
         # then turns around and turns to other side of screen
         #once end of bottom right of sreen, move to top of screen
         #display  logic in the terminal
-        self.rect.x += self.speed
+      #  self.rect.x += self.speed
        # self.get_keys()
        # self.x += 1
 
@@ -71,10 +93,14 @@ class Mob(Sprite):
             self.rect.y += 32
         elif self.rect.colliderect(self.game.player):
             self.speed *= -1
+        self.collide_with_walls('x')
+        self.rect.x = self.x
+        self.collide_with_walls('y')
+        self.rect.y = self.y
         
 class Wall(Sprite):
     def __init__(self, game, x, y):
-        self.groups = game.all_sprites   
+        self.groups = game.all_sprites, game.all_walls 
         Sprite.__init__(self, self.groups)
         self.game = game
         self.image = pg.Surface((TILESIZE, TILESIZE))
@@ -85,3 +111,17 @@ class Wall(Sprite):
 
     def update(self):
         pass
+
+class Powerup(Sprite):
+    def __init__(self, game, x, y):
+        self.groups = game.all_sprites, game.all_powerups 
+        Sprite.__init__(self, self.groups)
+        self.game = game
+        self.image = pg.Surface((TILESIZE, TILESIZE))
+        self.rect = self.image.get_rect()
+        self.image.fill(BLUE)
+        self.rect.x = x
+        self.rect.y = y
+
+
+
