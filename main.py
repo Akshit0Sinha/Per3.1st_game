@@ -69,6 +69,8 @@ class Game:
                     Mob(self, col, row)
                 if tile == 'U':
                     Powerup(self, col, row)
+                if tile == 'C':
+                    Coin(self, col, row)
 
        
             
@@ -107,6 +109,7 @@ class Game:
     def draw(self):
         self.screen.fill(WHITE)
         self.draw_text(self.screen, str(self.dt*1000), 24, BLACK, WIDTH/2, HEIGHT/2)
+        self.draw_text(self.screen, "Coins Collected: " + str(self.player.coins), 24, BLACK, WIDTH/2, HEIGHT/24)
         self.all_sprites.draw(self.screen)
         pg.display.flip()
 
