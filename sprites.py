@@ -72,7 +72,11 @@ class Mob(Sprite):
                     self.vy = 0
                     self.rect.y = self.y
 
-    
+    def collide_with_stuff(self, group, kill):
+        hits = pg.sprite.spritecollide(self, group, kill)
+        if hits:
+            if str(hits[0].__class__.__name__) == "Powerup":
+                print("I hit a powerup")
 
     def update(self):
         #looking for key pressed, moving to side of screen
@@ -93,10 +97,13 @@ class Mob(Sprite):
             self.rect.y += 32
         elif self.rect.colliderect(self.game.player):
             self.speed *= -1
-        self.collide_with_walls('x')
+        self.collide_with_stuff(self.game.all_powerups, True)
         self.rect.x = self.x
-        self.collide_with_walls('y')
+        self.collide_with_walls('x')
+        
         self.rect.y = self.y
+        self.collide_with_walls('y')
+        
         
 class Wall(Sprite):
     def __init__(self, game, x, y):
