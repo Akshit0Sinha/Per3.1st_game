@@ -14,7 +14,7 @@ FEEDBACK: ball bouncing off block in __ direction
 FREEDOM: moving the base below to track the ball
 
 What sentence does your game make?
-When    
+    
 When player collides with enemy, bounces off
 '''
 #create a game class to represent the examples later
