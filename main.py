@@ -2,7 +2,8 @@
 #import all necessary modules and libraries
 import pygame as pg
 from settings import *
-from sprites import *
+from sprites_sidescroller import *
+#from sprites import *
 from tilemap import *
 from os import path
 from random import randint
@@ -48,8 +49,8 @@ class Game:
         self.all_walls = pg.sprite.Group()
         self.all_mobs = pg.sprite.Group()
         self.all_powerups = pg.sprite.Group()
-        
-        #self.player = Player(self, 1, 1)
+        self.all_coins = pg.sprite.Group()
+        self.player = Player(self, 1, 1)
         #self.mob = Mob(self, 100, 100)
         #self.wall = Wall(self, 150, 150)
         #self.wall = Wall(self, 200, 200)
